@@ -4,20 +4,33 @@ var viewportSizeF = require("./getViewportSize"),
     DOMElement = require("famous/dom-renderables/DOMElement"),
 
     viewportSize = viewportSizeF(),
-    columns = 8,
-    thumbnailWidth = viewportSize.w / columns,
-    thumbnailHeight = thumbnailWidth * 0.75;
+    targetThumnailWidth = 240,
+
+    thumbnailWidth,
+    thumbnailHeight,
+    columns;
 
 module.exports = function (scene, index) {
     var car = scene.addChild(),
-        column = index % columns,
-        row = Math.floor(index / columns),
-        x = column * thumbnailWidth,
-        targetY = row * thumbnailHeight,
-        startY = Math.floor(viewportSize.h / thumbnailHeight) * thumbnailHeight,
-        increment = thumbnailHeight / 4,
+
         moveComponent,
-        mover;
+        mover,
+        row,
+        targetY,
+        startY,
+        increment,
+        column,
+        x;
+
+    columns = Math.floor(viewportSize.w / targetThumnailWidth);
+    thumbnailWidth = viewportSize.w / columns;
+    thumbnailHeight = thumbnailWidth * 0.75;
+    column = index % columns;
+    row = Math.floor(index / columns);
+    x = column * thumbnailWidth;
+    targetY = row * thumbnailHeight;
+    startY = Math.floor(viewportSize.h / thumbnailHeight) * thumbnailHeight;
+    increment = thumbnailHeight / 4;
 
     new DOMElement(car, { tagName: "img" })
         .setAttribute("src", "./images/car" + ("000" + (index + 1)).slice(-3) + ".jpg");
