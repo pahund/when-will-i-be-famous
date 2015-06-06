@@ -2,7 +2,6 @@
 
 var viewportSizeF = require("./getViewportSize"),
     DOMElement = require("famous/dom-renderables/DOMElement"),
-    settings = require("./settings"),
     scene = require("./scene"),
     calculator = require("./calculator"),
 
