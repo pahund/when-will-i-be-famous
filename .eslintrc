@@ -37,6 +37,7 @@
     "quotes": [0, "double"], //Too much noise for now, might consider to enable it as a warning later
     "semi-spacing": 0, //Too much noise for now, might consider to enable it as a warning later
     "space-infix-ops": 0,
-    "space-unary-ops": 0 //Too much noise for now, might consider to enable it as a warning later
+    "space-unary-ops": 0, //Too much noise for now, might consider to enable it as a warning later
+    "no-mixed-requires": 0
   }
 }

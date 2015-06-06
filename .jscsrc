@@ -2,22 +2,23 @@
   "requireCurlyBraces": ["do", "try", "catch"],
   "requireSpaceAfterKeywords": ["if", "else", "for", "while", "do", "switch", "return", "try", "catch"],
   "disallowSpaceAfterPrefixUnaryOperators": ["++", "--", "+", "-", "~", "!"],
-  "disallowSpaceAfterPrefixUnaryOperators": true,
   "disallowKeywords": ["with"],
   "disallowMultipleLineBreaks": true,
   "requireBlocksOnNewline": true,
   "disallowMixedSpacesAndTabs": true,
   "disallowTrailingWhitespace": true,
   "requireLineFeedAtFileEnd": true,
-  "requireSpacesInFunctionExpression": {
-    "beforeOpeningCurlyBrace": true,
+  "requireSpacesInAnonymousFunctionExpression": {
     "beforeOpeningRoundBrace": true
+  },
+  "requireSpacesInFunctionExpression": {
+    "beforeOpeningCurlyBrace": true
   },
   "validateJSDoc": {
     "checkParamNames": true,
     "requireParamTypes": false
   },
   "validateQuoteMarks": "\"",
-  "disallowMultipleVarDecl": true,
+  "requireMultipleVarDecl": "onevar",
   "disallowSpacesInsideParentheses": true
 }

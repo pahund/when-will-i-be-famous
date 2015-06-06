@@ -1,7 +1,9 @@
 "use strict";
 
-var viewportSize = require("./getViewportSize")(),
+var viewportSizeF = require("./getViewportSize"),
     DOMElement = require("famous/dom-renderables/DOMElement"),
+
+    viewportSize = viewportSizeF(),
     columns = 8,
     thumbnailWidth = viewportSize.w / columns,
     thumbnailHeight = thumbnailWidth * 0.75;
@@ -13,11 +15,12 @@ module.exports = function (scene, index) {
         x = column * thumbnailWidth,
         targetY = row * thumbnailHeight,
         startY = Math.floor(viewportSize.h / thumbnailHeight) * thumbnailHeight,
-        increment = thumbnailHeight / 4;
+        increment = thumbnailHeight / 4,
+        moveComponent,
+        mover;
 
     new DOMElement(car, { tagName: "img" })
         .setAttribute("src", "./images/car" + ("000" + (index + 1)).slice(-3) + ".jpg");
-
 
     car
         .setSizeMode("absolute", "absolute", "absolute")
@@ -30,7 +33,7 @@ module.exports = function (scene, index) {
 
     car.setPosition(x, startY);
 
-    var moveComponent = {
+    moveComponent = {
         onUpdate: function () {
             var x = car.getPosition()[0],
                 y = car.getPosition()[1];
@@ -43,7 +46,7 @@ module.exports = function (scene, index) {
         }
     };
 
-    var mover = car.addComponent(moveComponent);
+    mover = car.addComponent(moveComponent);
 
     car.requestUpdate(mover);
 };

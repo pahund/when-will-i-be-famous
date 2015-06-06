@@ -6,5 +6,5 @@ module.exports = function delay(ms, func) {
         window.setTimeout(function () {
             func.apply(null, args);
         }, ms);
-    }
+    };
 };

@@ -16,7 +16,7 @@ Now the dev server should be running on localhost:1618
 
 Run the linters with ```npm run lint```
 
-Run All Tests with ```npm test```
+Build for prod deployment with ```npm run build```
 
 ## License
 
