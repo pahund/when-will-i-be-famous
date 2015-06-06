@@ -6,25 +6,23 @@ Trying out the [famo.us](http://famous.org/) engine.
 
 ## Installation
 
-```
-npm install
-```
+To install npm packages and build JavaScript bundle (using [Browserify](http://browserify.org/):
+
+    npm install
 
 ## Development
 
 To start a dev server:
 
-    npm run dev
+    npm start
 
 Now the dev server should be running on [http://localhost:1618/](localhost:1618).
 
+## Testing
+
 To check the JavaScript code for errors:
 
-    npm run lint
-
-Build for prod deployment:
-
-    npm run build
+    npm test
 
 ## License
 

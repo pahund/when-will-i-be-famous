@@ -1,7 +1,5 @@
-"use strict";
-
-var FamousEngine = require("famous/core/FamousEngine");
+import FamousEngine from "famous/core/FamousEngine";
 
 FamousEngine.init();
 
-module.exports = FamousEngine.createScene();
+export default FamousEngine.createScene();

@@ -1,51 +1,40 @@
-"use strict";
+import getViewportSize from "./getViewportSize";
+import settings from "./settings";
 
-var viewportSizeF = require("./getViewportSize"),
-    settings = require("./settings"),
-
-    viewportSize = viewportSizeF();
+const viewportSize = getViewportSize();
 
 function getColumns() {
     return Math.floor(viewportSize.w / settings.targetThumbnailWidth);
 }
 
 function getThumbnailSize() {
-    var w = viewportSize.w / getColumns(),
+    const w = viewportSize.w / getColumns(),
         h = w * settings.thumbnailAspectRatio;
 
-    return {
-        w: w,
-        h: h
-    };
+    return { w, h };
 }
 
 function getGridCoords(index) {
-    var cols = getColumns(),
+    const cols = getColumns(),
         col = index % cols,
         row = Math.floor(index / cols);
 
-    return {
-        row: row,
-        col: col
-    };
+    return { row, col };
 }
 
 function getPixelCoords(index) {
-    var gridCoords = getGridCoords(index),
+    const gridCoords = getGridCoords(index),
         thumbnailSize = getThumbnailSize(),
         x = gridCoords.col * thumbnailSize.w,
         y = gridCoords.row * thumbnailSize.h;
 
-    return {
-        x: x,
-        y: y
-    };
+    return { x, y };
 }
 
-module.exports = {
-    getColumns: getColumns,
-    getThumbnailSize: getThumbnailSize,
-    getGridCoords: getGridCoords,
-    getPixelCoords: getPixelCoords
+export default {
+    getColumns,
+    getThumbnailSize,
+    getGridCoords,
+    getPixelCoords
 };
 

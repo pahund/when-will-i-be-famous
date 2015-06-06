@@ -1,20 +1,18 @@
-"use strict";
+import viewportSizeF from "./getViewportSize";
+import DOMElement from "famous/dom-renderables/DOMElement";
+import scene from "./scene";
+import calculator from "./calculator";
 
-var viewportSizeF = require("./getViewportSize"),
-    DOMElement = require("famous/dom-renderables/DOMElement"),
-    scene = require("./scene"),
-    calculator = require("./calculator"),
+const viewportSize = viewportSizeF();
 
-    viewportSize = viewportSizeF();
-
-module.exports = function (index) {
-    var car = scene.addChild(),
+function addCar(index) {
+    const car = scene.addChild(),
         thumbnailSize = calculator.getThumbnailSize(),
         pixelCoords = calculator.getPixelCoords(index),
         startY = Math.floor(viewportSize.h / thumbnailSize.h) * thumbnailSize.h,
-        increment = thumbnailSize.h / 4,
+        increment = thumbnailSize.h / 4;
 
-        moveComponent,
+    let moveComponent,
         mover;
 
     new DOMElement(car, { tagName: "img" })
@@ -32,8 +30,8 @@ module.exports = function (index) {
     car.setPosition(pixelCoords.x, startY);
 
     moveComponent = {
-        onUpdate: function () {
-            var x = car.getPosition()[0],
+        onUpdate: () => {
+            const x = car.getPosition()[0],
                 y = car.getPosition()[1];
             if (y > pixelCoords.y) {
                 car.setPosition(x, y - increment);
@@ -47,5 +45,6 @@ module.exports = function (index) {
     mover = car.addComponent(moveComponent);
 
     car.requestUpdate(mover);
-};
+}
 
+export default addCar;

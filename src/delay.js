@@ -1,10 +1,5 @@
-"use strict";
+function delay(ms, func) {
+    return (args) => window.setTimeout(() => func.apply(null, args), ms);
+}
 
-module.exports = function delay(ms, func) {
-    return function () {
-        var args = Array.prototype.slice.call(arguments);
-        window.setTimeout(function () {
-            func.apply(null, args);
-        }, ms);
-    };
-};
+export default delay;
