@@ -3,6 +3,7 @@ import DOMElement from "famous/dom-renderables/DOMElement";
 import scene from "./scene";
 import calculator from "./calculator";
 import loadImage from "./loadImage";
+import moving from "./components/moving";
 
 const viewportSize = viewportSizeF();
 
@@ -20,10 +21,7 @@ function add(index) {
             thumbnailSize = calculator.getThumbnailSize(),
             pixelCoords = calculator.getPixelCoords(index),
             startY = Math.floor(viewportSize.h / thumbnailSize.h) * thumbnailSize.h,
-            increment = thumbnailSize.h / 4;
-
-        let moveComponent,
-            mover;
+            increment = thumbnailSize.h / 4 * -1;
 
         new DOMElement(car, { tagName: "img" })
             .setAttribute("src", getPath(index));
@@ -38,23 +36,7 @@ function add(index) {
         }
 
         car.setPosition(pixelCoords.x, startY);
-
-        moveComponent = {
-            onUpdate: () => {
-                const x = car.getPosition()[0],
-                    y = car.getPosition()[1];
-                if (y > pixelCoords.y) {
-                    car.setPosition(x, y - increment);
-                    car.requestUpdateOnNextTick(mover);
-                    return;
-                }
-                car.removeComponent(moveComponent);
-            }
-        };
-
-        mover = car.addComponent(moveComponent);
-
-        car.requestUpdate(mover);
+        car.addComponent(moving(car, pixelCoords, { x: 0, y: increment }));
     };
 }
 
