@@ -1,9 +1,7 @@
 function moving(targetCoords, delta) {
     function isFinished(x, y) {
-        const yFinished = delta.y === 0 || (delta.y < 0 && y <= targetCoords.y) || (delta.y > 0 && y >= targetCoords.y),
-            xFinished = delta.x === 0 || (delta.x < 0 && x <= targetCoords.x) || (delta.x > 0 && x >= targetCoords.x);
-
-        return yFinished && xFinished;
+        return (delta.y === 0 || (delta.y < 0 && y <= targetCoords.y) || (delta.y > 0 && y >= targetCoords.y)) &&
+            (delta.x === 0 || (delta.x < 0 && x <= targetCoords.x) || (delta.x > 0 && x >= targetCoords.x));
     }
 
     return {
