@@ -2,10 +2,19 @@ import viewportSizeF from "./getViewportSize";
 import DOMElement from "famous/dom-renderables/DOMElement";
 import scene from "./scene";
 import calculator from "./calculator";
+import loadImage from "./loadImage";
 
 const viewportSize = viewportSizeF();
 
-function addCar(index) {
+function getPath(index) {
+    return "./images/car" + ("000" + (index + 1)).slice(-3) + ".jpg";
+}
+
+function load(index) {
+    return loadImage(getPath(index));
+}
+
+function add(index) {
     const car = scene.addChild(),
         thumbnailSize = calculator.getThumbnailSize(),
         pixelCoords = calculator.getPixelCoords(index),
@@ -16,7 +25,7 @@ function addCar(index) {
         mover;
 
     new DOMElement(car, { tagName: "img" })
-        .setAttribute("src", "./images/car" + ("000" + (index + 1)).slice(-3) + ".jpg");
+        .setAttribute("src", getPath(index));
 
     car
         .setSizeMode("absolute", "absolute", "absolute")
@@ -24,7 +33,7 @@ function addCar(index) {
 
     if (startY < pixelCoords.y) {
         car.setPosition(pixelCoords.x, pixelCoords.y);
-        return;
+        return () => {};
     }
 
     car.setPosition(pixelCoords.x, startY);
@@ -45,6 +54,16 @@ function addCar(index) {
     mover = car.addComponent(moveComponent);
 
     car.requestUpdate(mover);
+}
+
+function error(index) {
+    return () => {
+        throw new Error("loading image " + getPath(index) + " failed");
+    };
+}
+
+function addCar(index) {
+    load(index).then(() => add(index)).catch(error(index));
 }
 
 export default addCar;

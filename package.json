@@ -6,20 +6,16 @@
   "author": "Patrick Hund <wiekatz@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "install": "browserify src/index.js -g uglifyify | uglifyjs --screw-ie8 -m -c dead_code,sequences,conditionals,booleans,unused,if_return,join_vars,drop_debugger > public/bundle.js",
-    "start": "watchify src/index.js -d -v -o public/bundle.js & serve public/ -p 1618",
+    "install": "browserify src/index.js -t [ babelify --optional runtime ] -g uglifyify | uglifyjs --screw-ie8 -m -c dead_code,sequences,conditionals,booleans,unused,if_return,join_vars,drop_debugger > public/bundle.js",
+    "start": "watchify src/index.js -t [ babelify --optional runtime ] -d -v -o public/bundle.js & serve public/ -p 1618",
     "test": "eslint --ignore-path .gitignore src/"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Famous/engine-seed.git"
   },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
-  },
   "devDependencies": {
+    "babel-runtime": "^5.5.4",
     "browserify": "^10.1.3",
     "eslint": "^0.22.1",
     "serve": "^1.4.0",
