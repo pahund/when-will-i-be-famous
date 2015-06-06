@@ -15,45 +15,47 @@ function load(index) {
 }
 
 function add(index) {
-    const car = scene.addChild(),
-        thumbnailSize = calculator.getThumbnailSize(),
-        pixelCoords = calculator.getPixelCoords(index),
-        startY = Math.floor(viewportSize.h / thumbnailSize.h) * thumbnailSize.h,
-        increment = thumbnailSize.h / 4;
+    return () => {
+        const car = scene.addChild(),
+            thumbnailSize = calculator.getThumbnailSize(),
+            pixelCoords = calculator.getPixelCoords(index),
+            startY = Math.floor(viewportSize.h / thumbnailSize.h) * thumbnailSize.h,
+            increment = thumbnailSize.h / 4;
 
-    let moveComponent,
-        mover;
+        let moveComponent,
+            mover;
 
-    new DOMElement(car, { tagName: "img" })
-        .setAttribute("src", getPath(index));
+        new DOMElement(car, { tagName: "img" })
+            .setAttribute("src", getPath(index));
 
-    car
-        .setSizeMode("absolute", "absolute", "absolute")
-        .setAbsoluteSize(thumbnailSize.w, thumbnailSize.h);
+        car
+            .setSizeMode("absolute", "absolute", "absolute")
+            .setAbsoluteSize(thumbnailSize.w, thumbnailSize.h);
 
-    if (startY < pixelCoords.y) {
-        car.setPosition(pixelCoords.x, pixelCoords.y);
-        return () => {};
-    }
-
-    car.setPosition(pixelCoords.x, startY);
-
-    moveComponent = {
-        onUpdate: () => {
-            const x = car.getPosition()[0],
-                y = car.getPosition()[1];
-            if (y > pixelCoords.y) {
-                car.setPosition(x, y - increment);
-                car.requestUpdateOnNextTick(mover);
-                return;
-            }
-            car.removeComponent(moveComponent);
+        if (startY < pixelCoords.y) {
+            car.setPosition(pixelCoords.x, pixelCoords.y);
+            return () => {};
         }
+
+        car.setPosition(pixelCoords.x, startY);
+
+        moveComponent = {
+            onUpdate: () => {
+                const x = car.getPosition()[0],
+                    y = car.getPosition()[1];
+                if (y > pixelCoords.y) {
+                    car.setPosition(x, y - increment);
+                    car.requestUpdateOnNextTick(mover);
+                    return;
+                }
+                car.removeComponent(moveComponent);
+            }
+        };
+
+        mover = car.addComponent(moveComponent);
+
+        car.requestUpdate(mover);
     };
-
-    mover = car.addComponent(moveComponent);
-
-    car.requestUpdate(mover);
 }
 
 function error(index) {
@@ -63,7 +65,7 @@ function error(index) {
 }
 
 function addCar(index) {
-    load(index).then(() => add(index)).catch(error(index));
+    load(index).then(add(index)).catch(error(index));
 }
 
 export default addCar;
