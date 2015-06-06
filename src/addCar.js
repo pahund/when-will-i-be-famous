@@ -2,55 +2,41 @@
 
 var viewportSizeF = require("./getViewportSize"),
     DOMElement = require("famous/dom-renderables/DOMElement"),
+    settings = require("./settings"),
+    scene = require("./scene"),
+    calculator = require("./calculator"),
 
-    viewportSize = viewportSizeF(),
-    targetThumnailWidth = 240,
+    viewportSize = viewportSizeF();
 
-    thumbnailWidth,
-    thumbnailHeight,
-    columns;
-
-module.exports = function (scene, index) {
+module.exports = function (index) {
     var car = scene.addChild(),
+        thumbnailSize = calculator.getThumbnailSize(),
+        pixelCoords = calculator.getPixelCoords(index),
+        startY = Math.floor(viewportSize.h / thumbnailSize.h) * thumbnailSize.h,
+        increment = thumbnailSize.h / 4,
 
         moveComponent,
-        mover,
-        row,
-        targetY,
-        startY,
-        increment,
-        column,
-        x;
-
-    columns = Math.floor(viewportSize.w / targetThumnailWidth);
-    thumbnailWidth = viewportSize.w / columns;
-    thumbnailHeight = thumbnailWidth * 0.75;
-    column = index % columns;
-    row = Math.floor(index / columns);
-    x = column * thumbnailWidth;
-    targetY = row * thumbnailHeight;
-    startY = Math.floor(viewportSize.h / thumbnailHeight) * thumbnailHeight;
-    increment = thumbnailHeight / 4;
+        mover;
 
     new DOMElement(car, { tagName: "img" })
         .setAttribute("src", "./images/car" + ("000" + (index + 1)).slice(-3) + ".jpg");
 
     car
         .setSizeMode("absolute", "absolute", "absolute")
-        .setAbsoluteSize(thumbnailWidth, thumbnailHeight);
+        .setAbsoluteSize(thumbnailSize.w, thumbnailSize.h);
 
-    if (startY < targetY) {
-        car.setPosition(x, targetY);
+    if (startY < pixelCoords.y) {
+        car.setPosition(pixelCoords.x, pixelCoords.y);
         return;
     }
 
-    car.setPosition(x, startY);
+    car.setPosition(pixelCoords.x, startY);
 
     moveComponent = {
         onUpdate: function () {
             var x = car.getPosition()[0],
                 y = car.getPosition()[1];
-            if (y > targetY) {
+            if (y > pixelCoords.y) {
                 car.setPosition(x, y - increment);
                 car.requestUpdateOnNextTick(mover);
                 return;
