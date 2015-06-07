@@ -20,8 +20,8 @@ function add(index) {
         const car = scene.addChild(),
             thumbnailSize = calculator.getThumbnailSize(),
             pixelCoords = calculator.getPixelCoords(index),
-            startY = Math.floor(viewportSize.h / thumbnailSize.h) * thumbnailSize.h,
-            increment = thumbnailSize.h / 4 * -1;
+            startY = Math.floor(viewportSize.h / thumbnailSize.h) * thumbnailSize.h;
+            //increment = thumbnailSize.h / 4 * -1,
 
         new DOMElement(car, { tagName: "img" })
             .setAttribute("src", getPath(index));
@@ -35,19 +35,23 @@ function add(index) {
             return () => {};
         }
 
-        car.setPosition(pixelCoords.x, startY);
-        car.addComponent(moving(car, pixelCoords, { x: 0, y: increment }));
+        car.setPosition(thumbnailSize.w * -1, startY);
+        car.addComponent(moving(car, pixelCoords));
+
+
+
+
+
+        //car.addComponent(moving(car, pixelCoords, { x: 0, y: increment }));
     };
 }
 
-function error(index) {
-    return () => {
-        throw new Error("loading image " + getPath(index) + " failed");
-    };
+function error(error) {
+    throw new Error("something went wrong: " + error.message);
 }
 
 function addCar(index) {
-    load(index).then(add(index)).catch(error(index));
+    load(index).then(add(index)).catch(error);
 }
 
 export default addCar;
