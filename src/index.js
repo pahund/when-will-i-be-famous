@@ -1,5 +1,5 @@
 import GestureHandler from "famous/components/GestureHandler";
-import DOMElement from "famous/dom-renderables/DOMElement";
+import createDOMElement from "./createDOMElement";
 import addCar from "./addCar";
 import delay from "./delay";
 import scene from "./scene";
@@ -13,7 +13,7 @@ const container = scene.addChild(),
     gestures = new GestureHandler(container),
     viewportSize = viewportSizeF();
 
-new DOMElement(container);
+createDOMElement(container);
 
 for (let i = 0; i < settings.numberOfThumbnails; i++) {
     delay((i * 30) + (Math.random() * 100), addCar)(container, i);
