@@ -27,25 +27,27 @@ class ScrollBox {
 
     ////////// PRIVATE METHODS //////////
 
-    [handleDrag]({ status, centerVelocity, centerDelta }) {
+    [handleDrag]({ status, centerVelocity: { y: velocity }, centerDelta: { y: delta } }) {
         const currentY = getCoords(this.node).y,
             gallerySize = calculator.getGallerySize(),
             maxY = 0,
             minY = (gallerySize.h * -1) + this.viewportSize.h;
-        let newY = currentY + (status === "end" ? centerVelocity.y / 2 : centerDelta.y);
+        let newY = currentY + (status === "end" && delta * -1 > 10 ? velocity / 2 : delta);
         if (newY > maxY) {
             newY = maxY;
         }
         if (newY < minY) {
             newY = minY;
         }
-        if (status === "end") {
+        if (status === "end" && Math.abs(delta) > 10) {
             const mover = new Mover(this.node, { x: null, y: newY }, 500, "easeOut");
             mover.start();
             return;
         }
         this.node.setPosition(null, newY);
+        this.oldVelocity = velocity;
     }
+
 }
 
 export default ScrollBox;
