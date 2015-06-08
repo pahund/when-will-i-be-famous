@@ -7,10 +7,20 @@ function getColumns() {
     return Math.floor(viewportSize.w / settings.targetThumbnailWidth);
 }
 
+function getRows() {
+    return Math.ceil(settings.numberOfThumbnails / getColumns());
+}
+
 function getThumbnailSize() {
     const w = viewportSize.w / getColumns(),
         h = w * settings.thumbnailAspectRatio;
+    return { w, h };
+}
 
+function getGallerySize() {
+    const thumbnailSize = getThumbnailSize(),
+        w = getColumns() * thumbnailSize.w,
+        h = getRows() * thumbnailSize.h;
     return { w, h };
 }
 
@@ -33,8 +43,10 @@ function getPixelCoords(index) {
 
 export default {
     getColumns,
+    getRows,
     getThumbnailSize,
     getGridCoords,
-    getPixelCoords
+    getPixelCoords,
+    getGallerySize
 };
 

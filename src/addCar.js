@@ -1,9 +1,8 @@
 import viewportSizeF from "./getViewportSize";
 import DOMElement from "famous/dom-renderables/DOMElement";
-import scene from "./scene";
 import calculator from "./calculator";
 import loadImage from "./loadImage";
-import moving from "./components/moving";
+import Mover from "./components/Mover";
 
 const viewportSize = viewportSizeF();
 
@@ -15,13 +14,15 @@ function load(index) {
     return loadImage(getPath(index));
 }
 
-function add(index) {
+function add(parent, index) {
     return () => {
-        const car = scene.addChild(),
+        const car = parent.addChild(),
             thumbnailSize = calculator.getThumbnailSize(),
             pixelCoords = calculator.getPixelCoords(index),
             startY = Math.floor(viewportSize.h / thumbnailSize.h) * thumbnailSize.h;
-            //increment = thumbnailSize.h / 4 * -1,
+
+        let mover;
+        // gestures;
 
         new DOMElement(car, { tagName: "img" })
             .setAttribute("src", getPath(index));
@@ -36,22 +37,18 @@ function add(index) {
         }
 
         car.setPosition(thumbnailSize.w * -1, startY);
-        car.addComponent(moving(car, pixelCoords));
 
-
-
-
-
-        //car.addComponent(moving(car, pixelCoords, { x: 0, y: increment }));
+        mover = new Mover(car, pixelCoords);
+        mover.start();
     };
 }
 
-function error(error) {
-    throw new Error("something went wrong: " + error.message);
+function error(e) {
+    throw new Error("something went wrong: " + e.message);
 }
 
-function addCar(index) {
-    load(index).then(add(index)).catch(error);
+function addCar(container, index) {
+    load(index).then(add(container, index)).catch(error);
 }
 
 export default addCar;
