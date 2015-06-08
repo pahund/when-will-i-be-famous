@@ -1,4 +1,4 @@
-import viewportSizeF from "../getViewportSize";
+//import viewportSizeF from "../getViewportSize";
 import DOMElement from "famous/dom-renderables/DOMElement";
 import calculator from "../calculator";
 import loadImage from "../loadImage";
@@ -14,8 +14,7 @@ class Thumbnail {
         const car = parent.addChild(),
             thumbnailSize = calculator.getThumbnailSize(),
             pixelCoords = calculator.getPixelCoords(index),
-            viewportSize = viewportSizeF(),
-            startY = Math.floor(viewportSize.h / thumbnailSize.h) * thumbnailSize.h;
+            startX = thumbnailSize.w * -1;
 
         let mover;
 
@@ -26,12 +25,7 @@ class Thumbnail {
             .setSizeMode("absolute", "absolute", "absolute")
             .setAbsoluteSize(thumbnailSize.w, thumbnailSize.h);
 
-        if (startY < pixelCoords.y) {
-            car.setPosition(pixelCoords.x, pixelCoords.y);
-            return () => {};
-        }
-
-        car.setPosition(thumbnailSize.w * -1, startY);
+        car.setPosition(startX, pixelCoords.y);
 
         mover = new Mover(car, pixelCoords);
         mover.start();
