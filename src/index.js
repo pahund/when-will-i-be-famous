@@ -1,11 +1,11 @@
-import addCar from "./addCar";
-import addContainer from "./addContainer";
+import ScrollBox from "./nodes/ScrollBox";
+import Thumbnail from "./nodes/Thumbnail";
 import delay from "./delay";
 import scene from "./scene";
 import settings from "./settings";
 
-const container = addContainer(scene);
+const scrollBox = ScrollBox.add(scene);
 
 for (let i = 0; i < settings.numberOfThumbnails; i++) {
-    delay((i * 30) + (Math.random() * 100), addCar)(container, i);
+    delay((i * 30) + (Math.random() * 100), Thumbnail.add)(scrollBox, i);
 }

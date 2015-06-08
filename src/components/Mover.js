@@ -1,23 +1,10 @@
 import Transitionable from "famous/transitions/Transitionable";
 import getCoords from "../getCoords";
 
-function customCurve(t) {
-    let p = .3,
-        a = 1,
-        s = p / (1.1 * Math.PI) * Math.asin(1 / a);
-
-    if (t === 0) {
-        return 0;
-    }
-    if (t === 1) {
-        return 1;
-    }
-
-    return a * Math.pow(2, -10 * t) * Math.sin((t - s) * Math.PI / p) + 1;
-}
+const customCurve = Symbol("custom curve");
 
 class Mover {
-    constructor(node, targetCoords = { x: 0, y: 0 }, duration = 1000, curve = customCurve) {
+    constructor(node, targetCoords = { x: 0, y: 0 }, duration = 1000, curve = Mover[customCurve]) {
         this.targetCoords = targetCoords;
         this.duration = duration;
         this.startCoords = getCoords(node);
@@ -40,6 +27,23 @@ class Mover {
         if (this.transition.x.isActive() || this.transition.y.isActive()) {
             this.node.requestUpdate(this.id);
         }
+    }
+
+    ////////// PRIVATE METHODS //////////
+
+    static [customCurve](t) {
+        let p = .3,
+            a = 1,
+            s = p / (1.1 * Math.PI) * Math.asin(1 / a);
+
+        if (t === 0) {
+            return 0;
+        }
+        if (t === 1) {
+            return 1;
+        }
+
+        return a * Math.pow(2, -10 * t) * Math.sin((t - s) * Math.PI / p) + 1;
     }
 }
 
