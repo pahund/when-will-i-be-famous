@@ -4,7 +4,7 @@ import getCoords from "../getCoords";
 const customCurve = Symbol("custom curve");
 
 class Mover {
-    constructor(node, targetCoords = { x: 0, y: 0 }, duration = 1000, curve = Mover[customCurve]) {
+    constructor(node, targetCoords = { x: 0, y: 0 }, duration = 2000, curve = Mover[customCurve]) {
         this.targetCoords = targetCoords;
         this.duration = duration;
         this.startCoords = getCoords(node);

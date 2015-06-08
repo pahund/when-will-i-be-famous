@@ -14,7 +14,7 @@ class Thumbnail {
         const car = parent.addChild(),
             thumbnailSize = calculator.getThumbnailSize(),
             pixelCoords = calculator.getPixelCoords(index),
-            startX = thumbnailSize.w * -1;
+            startX = calculator.isOddRow(index) ? thumbnailSize.w * -1 : calculator.getGallerySize().w;
 
         let mover;
 

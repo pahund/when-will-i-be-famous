@@ -32,6 +32,16 @@ function getGridCoords(index) {
     return { row, col };
 }
 
+function getRow(index) {
+    const { row } = getGridCoords(index);
+    return row;
+}
+
+function getColumn(index) {
+    const { column } = getGridCoords(index);
+    return column;
+}
+
 function getPixelCoords(index) {
     const gridCoords = getGridCoords(index),
         thumbnailSize = getThumbnailSize(),
@@ -41,8 +51,30 @@ function getPixelCoords(index) {
     return { x, y };
 }
 
+function isOddRow(index) {
+    return getRow(index) % 2 !== 0;
+}
+
+function isEvenRow(index) {
+    return !isOddRow(index);
+}
+
+function isOddColumn(index) {
+    return getColumn(index) % 2 !== 0;
+}
+
+function isEvenColumn(index) {
+    return !isOddColumn(index);
+}
+
 export default {
+    isOddRow,
+    isOddColumn,
+    isEvenRow,
+    isEvenColumn,
+    getColumn,
     getColumns,
+    getRow,
     getRows,
     getThumbnailSize,
     getGridCoords,
