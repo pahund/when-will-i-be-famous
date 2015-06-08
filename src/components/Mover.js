@@ -43,7 +43,7 @@ class Mover {
             return 1;
         }
 
-        return a * Math.pow(2, -10 * t) * Math.sin((t - s) * Math.PI / p) + 1;
+        return a * Math.pow(3, -10 * t) * Math.sin((t - s) * Math.PI / p) + 1;
     }
 }
 

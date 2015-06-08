@@ -12,11 +12,16 @@ class ScrollBox {
         let gestures;
 
         this.viewportSize = viewportSizeF();
+        this.gallerySize = calculator.getGallerySize();
         this.node = parent.addChild();
 
         gestures = new GestureHandler(this.node);
 
         createDOMElement(this.node);
+        this.node
+            .setSizeMode("absolute", "absolute", "absolute")
+            .setAbsoluteSize(this.gallerySize.w, this.gallerySize.h)
+            .setPosition(0, 0);
 
         gestures.on("drag", this[handleDrag].bind(this));
     }
@@ -29,10 +34,9 @@ class ScrollBox {
 
     [handleDrag]({ status, centerVelocity: { y: velocity }, centerDelta: { y: delta } }) {
         const currentY = getCoords(this.node).y,
-            gallerySize = calculator.getGallerySize(),
             maxY = 0,
-            minY = (gallerySize.h * -1) + this.viewportSize.h;
-        let newY = currentY + (status === "end" && delta * -1 > 10 ? velocity / 2 : delta);
+            minY = (this.gallerySize.h * -1) + this.viewportSize.h;
+        let newY = currentY + (status === "end" && Math.abs(delta) > 10 ? velocity / 2 : delta);
         if (newY > maxY) {
             newY = maxY;
         }
@@ -45,7 +49,6 @@ class ScrollBox {
             return;
         }
         this.node.setPosition(null, newY);
-        this.oldVelocity = velocity;
     }
 
 }
