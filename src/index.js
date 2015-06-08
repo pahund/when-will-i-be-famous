@@ -23,7 +23,7 @@ gestures.on("drag", function (data) {
         gallerySize = calculator.getGallerySize(),
         maxY = 0,
         minY = (gallerySize.h * -1) + viewportSize.h;
-    let newY = currentY + (data.status === "end" ? data.centerVelocity.y : data.centerDelta.y);
+    let newY = currentY + (data.status === "end" ? data.centerVelocity.y / 2 : data.centerDelta.y);
     if (newY > maxY) {
         newY = maxY;
     }
@@ -31,7 +31,7 @@ gestures.on("drag", function (data) {
         newY = minY;
     }
     if (data.status === "end") {
-        const mover = new Mover(container, { x: null, y: newY });
+        const mover = new Mover(container, { x: null, y: newY }, 500, "easeOut");
         mover.start();
         return;
     }

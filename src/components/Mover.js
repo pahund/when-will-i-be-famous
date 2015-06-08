@@ -1,7 +1,7 @@
 import Transitionable from "famous/transitions/Transitionable";
 import getCoords from "../getCoords";
 
-function curve(t) {
+function customCurve(t) {
     let p = .3,
         a = 1,
         s = p / (1.1 * Math.PI) * Math.asin(1 / a);
@@ -17,19 +17,20 @@ function curve(t) {
 }
 
 class Mover {
-    constructor(node, targetCoords = { x: 0, y: 0 }, duration = 1000) {
+    constructor(node, targetCoords = { x: 0, y: 0 }, duration = 1000, curve = customCurve) {
         this.targetCoords = targetCoords;
         this.duration = duration;
         this.startCoords = getCoords(node);
         this.node = node;
         this.id = node.addComponent(this);
+        this.curve = curve;
     }
 
     start() {
         this.node.requestUpdate(this.id);
         this.transition = {
-            y: new Transitionable(this.startCoords.y).to(this.targetCoords.y, curve, this.duration),
-            x: new Transitionable(this.startCoords.x).to(this.targetCoords.x, curve, this.duration)
+            y: new Transitionable(this.startCoords.y).to(this.targetCoords.y, this.curve, this.duration),
+            x: new Transitionable(this.startCoords.x).to(this.targetCoords.x, this.curve, this.duration)
         };
     }
 
