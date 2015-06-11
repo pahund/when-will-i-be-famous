@@ -15,16 +15,16 @@
     "url": "https://github.com/Famous/engine-seed.git"
   },
   "devDependencies": {
-    "babel-runtime": "^5.5.4",
-    "browserify": "^10.1.3",
+    "babel-runtime": "^5.5.6",
+    "browserify": "^10.2.4",
     "eslint": "^0.22.1",
     "serve": "^1.4.0",
-    "uglify-js": "^2.4.15",
+    "uglify-js": "^2.4.23",
     "uglifyify": "^3.0.1",
-    "watchify": "^3.1.0"
+    "watchify": "^3.2.2"
   },
   "dependencies": {
-    "babelify": "^6.0.1",
-    "famous": "git://github.com/famous/engine"
+    "babelify": "^6.1.2",
+    "famous": "^0.5.2"
   }
 }
