@@ -9,8 +9,6 @@ const scrollBox = ScrollBox.add(scene);
 
 Logo.add(scene);
 
-Thumbnail.add(scrollBox, 0);
-
 for (let i = 0; i < settings.numberOfThumbnails; i++) {
     delay((i * 30) + (Math.random() * 100), Thumbnail.add)(scrollBox, i);
 }
