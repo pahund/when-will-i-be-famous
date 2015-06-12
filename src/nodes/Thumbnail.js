@@ -1,61 +1,37 @@
-//import viewportSizeF from "../getViewportSize";
-import DOMElement from "famous/dom-renderables/DOMElement";
 import calculator from "../calculator";
 import loadImage from "../loadImage";
 import Mover from "../components/Mover";
+import Image from "./Image";
 
-const loadThumbnailImage = Symbol("load thumbnail image"),
-    getPath = Symbol("get path"),
-    createInstance = Symbol("create instance"),
-    throwError = Symbol("throw error");
+const getPath = Symbol("get path");
 
-class Thumbnail {
-    constructor(parent, index) {
-        const car = parent.addChild(),
-            thumbnailSize = calculator.getThumbnailSize(),
-            pixelCoords = calculator.getPixelCoords(index),
-            startX = calculator.isOddRow(index) ? thumbnailSize.w * -1 : calculator.getGallerySize().w;
-
-        let mover;
-
-        new DOMElement(car, { tagName: "img" })
-            .setAttribute("src", Thumbnail[getPath](index));
-
-        car
-            .setSizeMode("absolute", "absolute", "absolute")
-            .setAbsoluteSize(thumbnailSize.w, thumbnailSize.h);
-
-        car.setPosition(startX, pixelCoords.y);
-
-        mover = new Mover(car, pixelCoords);
+class Thumbnail extends Image {
+    constructor(parent, path, size, startCoords, targetCoords) {
+        super(parent, path, size, startCoords);
+        const mover = new Mover(this.node, targetCoords);
         mover.start();
-
     }
 
     static add(container, index) {
-        return Thumbnail[loadThumbnailImage](index)
-            .then(Thumbnail[createInstance](container, index))
-            .catch(Thumbnail[throwError]);
+        const path = Thumbnail[getPath](index),
+            thumbnailSize = calculator.getThumbnailSize(),
+            targetCoords = calculator.getPixelCoords(index),
+            startCoords = {
+                x: calculator.isOddRow(index) ? thumbnailSize.w * -1 : calculator.getGallerySize().w,
+                y: targetCoords.y
+            };
+
+        return loadImage(path)
+            .then(() => new Thumbnail(container, path, thumbnailSize, startCoords, targetCoords))
+            .catch(error => {
+                throw new Error("Error adding thumbnail " + path + ": " + error.message);
+            });
     }
 
     ////////// PRIVATE METHODS //////////
 
-    static [throwError](e) {
-        throw new Error("something went wrong: " + e.message);
-    }
-
     static [getPath](index) {
         return "./images/car" + ("000" + (index + 1)).slice(-3) + ".jpg";
-    }
-
-    static [loadThumbnailImage](index) {
-        return loadImage(Thumbnail[getPath](index));
-    }
-
-    static [createInstance](parent, index) {
-        return () => {
-            return new Thumbnail(parent, index);
-        };
     }
 }
 

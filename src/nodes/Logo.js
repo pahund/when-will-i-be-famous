@@ -1,45 +1,21 @@
-import createDOMElement from "../createDOMElement";
 import loadImage from "../loadImage";
+import Image from "./Image";
 
 const logoPath = "./images/mobilede-logo.svg",
     logoSize = { w: 182, h: 57 },
-    logoPosition = [ 10, 10, 10 ],
-    loadLogoImage = Symbol("load thumbnail image"),
-    createInstance = Symbol("create instance"),
-    throwError = Symbol("throw error");
+    logoPosition = { x: 10, y: 10, z: 10 };
 
-class Logo {
+class Logo extends Image {
     constructor(parent) {
-        const node = parent.addChild();
-        createDOMElement(node, { tagName: "img" })
-            .setAttribute("src", logoPath);
-
-        node
-            .setSizeMode("absolute", "absolute", "absolute")
-            .setAbsoluteSize(logoSize.w, logoSize.h)
-            .setPosition(...logoPosition);
+        super(parent, logoPath, logoSize, logoPosition);
     }
 
     static add(container) {
-        return Logo[loadLogoImage]()
-            .then(Logo[createInstance](container))
-            .catch(Logo[throwError]);
-    }
-
-    ////////// PRIVATE METHODS //////////
-
-    static [throwError](e) {
-        throw new Error("something went wrong: " + e.message);
-    }
-
-    static [loadLogoImage]() {
-        return loadImage(logoPath);
-    }
-
-    static [createInstance](parent) {
-        return () => {
-            return new Logo(parent);
-        };
+        return loadImage(logoPath)
+            .then(() => new Logo(container))
+            .catch(error => {
+                throw new Error("Error adding logo " + logoPath + ": " + error.message);
+            });
     }
 }
 
