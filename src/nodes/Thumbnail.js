@@ -13,14 +13,14 @@ const getPath = Symbol("get path"),
 class Thumbnail extends Image {
     constructor(parent, path, index) {
         super(parent, path, Thumbnail[getSize](), Thumbnail[getStartCoords](index));
-        Mover.addTo(this.node, Thumbnail[getTargetCoords](index)).start();
-        ResizeListener.addTo(this.node, () => {
-            Scaler.addTo(this.node, Thumbnail[getSize]()).start();
-            Mover.addTo(this.node, Thumbnail[getTargetCoords](index)).start();
+        Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
+        ResizeListener.addTo(this, () => {
+            Scaler.addTo(this, Thumbnail[getSize]()).start();
+            Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
         });
     }
 
-    static add(container, index) {
+    static addTo(container, index) {
         const path = Thumbnail[getPath](index);
         return loadImage(path)
             .then(() => new Thumbnail(container, path, index))

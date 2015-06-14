@@ -10,7 +10,7 @@ class Logo extends Image {
         super(parent, logoPath, logoSize, logoPosition);
     }
 
-    static add(container) {
+    static addTo(container) {
         return loadImage(logoPath)
             .then(() => new Logo(container))
             .catch(error => {

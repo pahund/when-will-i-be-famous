@@ -7,18 +7,16 @@ import settings from "./settings";
 import onResize from "./onResize";
 import getViewportSize from "./getViewportSize";
 
-const scrollBox = ScrollBox.add(scene);
+const scrollBox = ScrollBox.addTo(scene);
 
-Logo.add(scene);
+Logo.addTo(scene);
 
 for (let i = 0; i < settings.numberOfThumbnails; i++) {
-    delay((i * 30) + (Math.random() * 100), Thumbnail.add)(scrollBox.node, i);
+    delay((i * 30) + (Math.random() * 100), Thumbnail.addTo)(scrollBox, i);
 }
 
-//onResize(() => scrollBox.reflow());
 onResize(() => {
     const { w, h } = getViewportSize();
     scene.onReceive("CONTEXT_RESIZE", [ w, h ]);
-    //scene.emit("VIEWPORT_RESIZE", { w, h });
     scene.getDispatch().dispatch("VIEWPORT_RESIZE", { w, h });
 });
