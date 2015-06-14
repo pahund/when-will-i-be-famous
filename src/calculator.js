@@ -1,10 +1,8 @@
 import getViewportSize from "./getViewportSize";
 import settings from "./settings";
 
-const viewportSize = getViewportSize();
-
 function getColumns() {
-    return Math.floor(viewportSize.w / settings.targetThumbnailWidth);
+    return Math.floor(getViewportSize().w / settings.targetThumbnailWidth);
 }
 
 function getRows() {
@@ -12,7 +10,7 @@ function getRows() {
 }
 
 function getThumbnailSize() {
-    const w = viewportSize.w / getColumns(),
+    const w = getViewportSize().w / getColumns(),
         h = w * settings.thumbnailAspectRatio;
     return { w, h };
 }

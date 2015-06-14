@@ -26,7 +26,14 @@ class Mover {
 
         if (this.transition.x.isActive() || this.transition.y.isActive()) {
             this.node.requestUpdate(this.id);
+            return;
         }
+
+        this.node.removeComponent(this);
+    }
+
+    static addTo(node, targetCoords, duration, curve) {
+        return new Mover(node, targetCoords, duration, curve);
     }
 
     ////////// PRIVATE METHODS //////////
