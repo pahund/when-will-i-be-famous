@@ -28,6 +28,15 @@ a {
   .btn + .btn {
     margin-left: 1rem; }
 
+.btn-loud {
+    background-color: rgba(255, 255, 255, 0.7);
+    color: black;
+}
+.btn-loud:hover {
+    background-color: white !important;
+    color: black !important;
+}
+
 .btn:hover {
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
