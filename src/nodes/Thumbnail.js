@@ -2,7 +2,6 @@ import calculator from "../calculator";
 import loadImage from "../loadImage";
 import Mover from "../components/Mover";
 import Image from "./Image";
-import ResizeListener from "../components/ResizeListener";
 import Scaler from "../components/Scaler";
 
 const getPath = Symbol("get path"),
@@ -17,10 +16,6 @@ class Thumbnail extends Image {
         this.scaler = {
             stop: () => {}
         };
-        ResizeListener.addTo(this, () => {
-            this.scaler = Scaler.addTo(this, Thumbnail[getSize]()).start();
-            this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
-        });
         this.addUIEvent("click");
         this.onReceive = event => {
             if (event === "click") {
@@ -28,6 +23,10 @@ class Thumbnail extends Image {
                 this.mover.stop();
                 this.scaler = Scaler.addTo(this, calculator.getZoomDimensions()).start();
                 this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
+            }
+            if (event === "VIEWPORT_RESIZE") {
+                this.scaler = Scaler.addTo(this, Thumbnail[getSize]()).start();
+                this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
             }
         };
     }

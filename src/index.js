@@ -6,6 +6,7 @@ import scene from "./scene";
 import settings from "./settings";
 import onResize from "./onResize";
 import getViewportSize from "./getViewportSize";
+import Dispatch from "famous/core/Dispatch";
 
 const scrollBox = ScrollBox.addTo(scene);
 
@@ -17,6 +18,6 @@ for (let i = 0; i < settings.numberOfThumbnails; i++) {
 
 onResize(() => {
     const { w, h } = getViewportSize();
-    scene.onReceive("CONTEXT_RESIZE", [ w, h ]);
-    scene.getDispatch().dispatch("VIEWPORT_RESIZE", { w, h });
+    //scene.onReceive("CONTEXT_RESIZE", [ w, h ]);
+    Dispatch.dispatch("body", "VIEWPORT_RESIZE", { w, h });
 });

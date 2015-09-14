@@ -1,19 +1,5 @@
 import getViewportSize from "./getViewportSize";
-
-const resizeResponseTime = 100;
-
-function periodicChecker(predf) {
-    return function checkf(successf, alwaysf) {
-        window.setTimeout(() => {
-            if (predf()) {
-                checkf(successf, alwaysf);
-                return;
-            }
-            successf();
-            alwaysf();
-        }, resizeResponseTime);
-    };
-}
+import periodicChecker from "./util/periodicChecker";
 
 function updater(updatef) {
     let oldValue = updatef();
