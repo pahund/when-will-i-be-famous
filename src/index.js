@@ -1,4 +1,3 @@
-import ScrollBox from "./nodes/ScrollBox";
 import Thumbnail from "./nodes/Thumbnail";
 import Logo from "./nodes/Logo";
 import delay from "./delay";
@@ -8,16 +7,13 @@ import onResize from "./onResize";
 import getViewportSize from "./getViewportSize";
 import Dispatch from "famous/core/Dispatch";
 
-const scrollBox = ScrollBox.addTo(scene);
-
 Logo.addTo(scene);
 
 for (let i = 0; i < settings.numberOfThumbnails; i++) {
-    delay((i * 30) + (Math.random() * 100), Thumbnail.addTo)(scrollBox, i);
+    delay((i * 30) + (Math.random() * 100), Thumbnail.addTo)(scene, i);
 }
 
 onResize(() => {
     const { w, h } = getViewportSize();
-    //scene.onReceive("CONTEXT_RESIZE", [ w, h ]);
     Dispatch.dispatch("body", "VIEWPORT_RESIZE", { w, h });
 });

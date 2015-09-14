@@ -1,17 +1,6 @@
 import getViewportSize from "./getViewportSize";
 import periodicChecker from "./util/periodicChecker";
-
-function updater(updatef) {
-    let oldValue = updatef();
-    return () => {
-        let newValue = updatef();
-        if (oldValue !== newValue) {
-            oldValue = newValue;
-            return true;
-        }
-        return false;
-    };
-}
+import updater from "./util/updater";
 
 function onResize(...actions) {
     const heightUpdater = updater(() => getViewportSize().h),
