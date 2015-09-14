@@ -6,6 +6,7 @@ import scene from "./scene";
 import settings from "./settings";
 import onResize from "./onResize";
 import getViewportSize from "./getViewportSize";
+import loadAds from "./loadAds";
 
 const scrollBox = ScrollBox.addTo(scene);
 
@@ -20,3 +21,5 @@ onResize(() => {
     scene.onReceive("CONTEXT_RESIZE", [ w, h ]);
     scene.getDispatch().dispatch("VIEWPORT_RESIZE", { w, h });
 });
+
+loadAds(40).then(console.log);
