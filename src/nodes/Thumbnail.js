@@ -3,6 +3,7 @@ import loadImage from "../loadImage";
 import Mover from "../components/Mover";
 import Image from "./Image";
 import Scaler from "../components/Scaler";
+import Dispatch from "famous/core/Dispatch";
 
 const getPath = Symbol("get path"),
     getStartCoords = Symbol("get start coordinates"),
@@ -46,6 +47,11 @@ class Thumbnail extends Image {
             case "VIEWPORT_RESIZE":
                 this[handleResize]();
                 break;
+            case "ZOOMED_IN":
+                if (this.zoomed) {
+                    this[zoomOut]();
+                }
+                break;
             default:
         }
     }
@@ -53,6 +59,7 @@ class Thumbnail extends Image {
     ////////// PRIVATE METHODS //////////
 
     [zoomIn]() {
+        Dispatch.dispatch("body", "ZOOMED_IN", this.index);
         this.zoomed = true;
         this.scaler.stop();
         this.mover.stop();

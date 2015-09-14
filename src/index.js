@@ -4,7 +4,6 @@ import delay from "./delay";
 import scene from "./scene";
 import settings from "./settings";
 import onResize from "./onResize";
-import onScroll from "./onScroll";
 import getViewportSize from "./getViewportSize";
 import Dispatch from "famous/core/Dispatch";
 
