@@ -4,6 +4,7 @@ import Mover from "../components/Mover";
 import Image from "./Image";
 import ResizeListener from "../components/ResizeListener";
 import Scaler from "../components/Scaler";
+import Zoomer from "../components/Zoomer";
 
 const getPath = Symbol("get path"),
     getStartCoords = Symbol("get start coordinates"),
@@ -18,6 +19,12 @@ class Thumbnail extends Image {
             Scaler.addTo(this, Thumbnail[getSize]()).start();
             Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
         });
+        this.addUIEvent("click");
+        this.onReceive = (event, payload) => {
+            if (event === "click") {
+                Zoomer.addTo(this);
+            }
+        };
     }
 
     static addTo(container, index) {
@@ -42,10 +49,7 @@ class Thumbnail extends Image {
         };
     }
 
-    static [getTargetCoords](index) {
-        return calculator.getPixelCoords(index);
-    }
-
+    static [getTargetCoords](index) { return calculator.getPixelCoords(index); }
     static [getPath](index) {
         return "./images/car" + ("000" + (index + 1)).slice(-3) + ".jpg";
     }

@@ -2,7 +2,7 @@ import Transitionable from "famous/transitions/Transitionable";
 import getSize from "../getSize";
 
 class Scaler {
-    constructor(node, targetSize = { w: 120, y: 80 }, duration = 100) {
+    constructor(node, targetSize = { w: 120, h: 80 }, duration = 100) {
         this.targetSize = targetSize;
         this.duration = duration;
         this.startSize = getSize(node);
