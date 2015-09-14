@@ -43,7 +43,7 @@ function getZoomCoords() {
             zoomHeight = getZoomDimensions().h;
     return {
         x: 0,
-        y: (viewportHeight / 2) - (zoomHeight / 2),
+        y: (viewportHeight / 2) - (zoomHeight / 2) + window.pageYOffset,
         z: 100
     };
 }
