@@ -2,7 +2,7 @@ import getViewportSize from "./getViewportSize";
 import periodicChecker from "./util/periodicChecker";
 import updater from "./util/updater";
 
-function onResize(...actions) {
+export default (...actions) => {
     const heightUpdater = updater(() => getViewportSize().h),
         widthUpdater = updater(() => getViewportSize().w),
         resizeChecker = periodicChecker(() => widthUpdater() || heightUpdater());
@@ -13,6 +13,5 @@ function onResize(...actions) {
             resizeChecker(() => actions.forEach(action => action()), startf);
         };
     }());
-}
+};
 
-export default onResize;

@@ -16,17 +16,30 @@ class Thumbnail extends Image {
         this.scaler = {
             stop: () => {}
         };
+        this.zoomed = false;
         this.addUIEvent("click");
         this.onReceive = event => {
             if (event === "click") {
+                this.zoomed = true;
                 this.scaler.stop();
                 this.mover.stop();
                 this.scaler = Scaler.addTo(this, calculator.getZoomDimensions()).start();
                 this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
             }
             if (event === "VIEWPORT_RESIZE") {
-                this.scaler = Scaler.addTo(this, Thumbnail[getSize]()).start();
-                this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
+                this.scaler.stop();
+                this.mover.stop();
+                if (this.zoomed) {
+                    this.scaler = Scaler.addTo(this, calculator.getZoomDimensions()).start();
+                    this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
+                } else {
+                    this.scaler = Scaler.addTo(this, Thumbnail[getSize]()).start();
+                    this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
+                }
+            }
+            if (event === "VIEWPORT_SCROLL" && this.zoomed) {
+                this.mover.stop();
+                this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
             }
         };
     }
