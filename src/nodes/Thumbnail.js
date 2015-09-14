@@ -8,7 +8,8 @@ const getPath = Symbol("get path"),
     getStartCoords = Symbol("get start coordinates"),
     getTargetCoords = Symbol("get target coordinates"),
     getSize = Symbol("get size"),
-    handleClick = Symbol("handle click"),
+    zoomIn = Symbol("zoom in"),
+    zoomOut = Symbol("zoom out"),
     handleScroll = Symbol("handle scroll"),
     handleResize = Symbol("handle resize");
 
@@ -36,7 +37,11 @@ class Thumbnail extends Image {
     onReceive(event) {
         switch (event) {
             case "click":
-                this[handleClick]();
+                if (!this.zoomed) {
+                    this[zoomIn]();
+                } else {
+                    this[zoomOut]();
+                }
                 break;
             case "VIEWPORT_RESIZE":
                 this[handleResize]();
@@ -47,12 +52,20 @@ class Thumbnail extends Image {
 
     ////////// PRIVATE METHODS //////////
 
-    [handleClick]() {
+    [zoomIn]() {
         this.zoomed = true;
         this.scaler.stop();
         this.mover.stop();
         this.scaler = Scaler.addTo(this, calculator.getZoomDimensions()).start();
         this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
+    }
+
+    [zoomOut]() {
+        this.zoomed = false;
+        this.scaler.stop();
+        this.mover.stop();
+        this.scaler = Scaler.addTo(this, calculator.getThumbnailSize()).start();
+        this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](this.index)).start();
     }
 
     [handleResize]() {
