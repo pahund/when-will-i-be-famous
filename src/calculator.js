@@ -30,6 +30,24 @@ function getGridCoords(index) {
     return { row, col };
 }
 
+function getZoomDimensions() {
+    const viewportWidth = getViewportSize().w;
+    return {
+        w: viewportWidth,
+        h: viewportWidth * 0.75 // 4:3 hardcoded
+    };
+}
+
+function getZoomCoords() {
+    const viewportHeight = getViewportSize().h,
+            zoomHeight = getZoomDimensions().h;
+    return {
+        x: 0,
+        y: (viewportHeight / 2) - (zoomHeight / 2),
+        z: 100
+    };
+}
+
 function getRow(index) {
     const { row } = getGridCoords(index);
     return row;
@@ -44,9 +62,10 @@ function getPixelCoords(index) {
     const gridCoords = getGridCoords(index),
         thumbnailSize = getThumbnailSize(),
         x = gridCoords.col * thumbnailSize.w,
-        y = gridCoords.row * thumbnailSize.h;
+        y = gridCoords.row * thumbnailSize.h,
+        z = 0;
 
-    return { x, y };
+    return { x, y, z };
 }
 
 function isOddRow(index) {
@@ -77,6 +96,8 @@ export default {
     getThumbnailSize,
     getGridCoords,
     getPixelCoords,
+    getZoomCoords,
+    getZoomDimensions,
     getGallerySize
 };
 

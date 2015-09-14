@@ -25,6 +25,6 @@
   },
   "dependencies": {
     "babelify": "^6.1.2",
-    "famous": "^0.5.2"
+    "famous": "^0.7.1"
   }
 }

@@ -4,7 +4,7 @@ import getCoords from "../getCoords";
 const customCurve = Symbol("custom curve");
 
 class Mover {
-    constructor(node, targetCoords = { x: 0, y: 0 }, duration = 2000, curve = Mover[customCurve]) {
+    constructor(node, targetCoords = { x: 0, y: 0, z: 0 }, duration = 2000, curve = Mover[customCurve]) {
         this.targetCoords = targetCoords;
         this.duration = duration;
         this.startCoords = getCoords(node);
@@ -17,7 +17,8 @@ class Mover {
         this.node.requestUpdate(this.id);
         this.transition = {
             y: new Transitionable(this.startCoords.y).to(this.targetCoords.y, this.curve, this.duration),
-            x: new Transitionable(this.startCoords.x).to(this.targetCoords.x, this.curve, this.duration)
+            x: new Transitionable(this.startCoords.x).to(this.targetCoords.x, this.curve, this.duration),
+            z: new Transitionable(this.startCoords.z).to(this.targetCoords.z, this.curve, this.duration)
         };
         return this;
     }
@@ -27,9 +28,9 @@ class Mover {
     }
 
     onUpdate() {
-        this.node.setPosition(this.transition.x.get(), this.transition.y.get());
+        this.node.setPosition(this.transition.x.get(), this.transition.y.get(), this.transition.z.get());
 
-        if (this.transition.x.isActive() || this.transition.y.isActive()) {
+        if (this.transition.x.isActive() || this.transition.y.isActive() || this.transition.z.isActive()) {
             this.node.requestUpdate(this.id);
             return;
         }
