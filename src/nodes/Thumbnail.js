@@ -41,9 +41,6 @@ class Thumbnail extends Image {
             case "VIEWPORT_RESIZE":
                 this[handleResize]();
                 break;
-            case "VIEWPORT_SCROLL":
-                this[handleScroll]();
-                break;
             default:
         }
     }

@@ -16,5 +16,4 @@ for (let i = 0; i < settings.numberOfThumbnails; i++) {
 
 onResize(() => Dispatch.dispatch("body", "VIEWPORT_RESIZE", getViewportSize()));
 
-onScroll(() => Dispatch.dispatch("body", "VIEWPORT_SCROLL", window.pageYOffset));
 
