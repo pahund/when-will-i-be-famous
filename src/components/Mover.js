@@ -19,6 +19,11 @@ class Mover {
             y: new Transitionable(this.startCoords.y).to(this.targetCoords.y, this.curve, this.duration),
             x: new Transitionable(this.startCoords.x).to(this.targetCoords.x, this.curve, this.duration)
         };
+        return this;
+    }
+
+    stop() {
+        this.node.removeComponent(this);
     }
 
     onUpdate() {
@@ -29,7 +34,7 @@ class Mover {
             return;
         }
 
-        this.node.removeComponent(this);
+        this.stop();
     }
 
     static addTo(node, targetCoords, duration, curve) {

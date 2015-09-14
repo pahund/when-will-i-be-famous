@@ -16,6 +16,12 @@ class Scaler {
             w: new Transitionable(this.startSize.w).to(this.targetSize.w, "easeOut", this.duration),
             h: new Transitionable(this.startSize.h).to(this.targetSize.h, "easeOut", this.duration)
         };
+        return this;
+    }
+
+    stop() {
+        this.node.removeComponent(this);
+        return this;
     }
 
     onUpdate() {
@@ -25,8 +31,7 @@ class Scaler {
             this.node.requestUpdate(this.id);
             return;
         }
-
-        this.node.removeComponent(this);
+        this.stop();
     }
 
     static addTo(node, targetSize, duration) {

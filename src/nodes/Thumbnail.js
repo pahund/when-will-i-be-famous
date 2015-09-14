@@ -14,14 +14,19 @@ const getPath = Symbol("get path"),
 class Thumbnail extends Image {
     constructor(parent, path, index) {
         super(parent, path, Thumbnail[getSize](), Thumbnail[getStartCoords](index));
-        Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
+        this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
+        this.scaler = {
+            stop: () => {}
+        };
         ResizeListener.addTo(this, () => {
-            Scaler.addTo(this, Thumbnail[getSize]()).start();
-            Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
+            this.scaler = Scaler.addTo(this, Thumbnail[getSize]()).start();
+            this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
         });
         this.addUIEvent("click");
         this.onReceive = (event, payload) => {
             if (event === "click") {
+                this.scaler.stop();
+                this.mover.stop();
                 Zoomer.addTo(this);
             }
         };
