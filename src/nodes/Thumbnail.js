@@ -7,7 +7,10 @@ import Scaler from "../components/Scaler";
 const getPath = Symbol("get path"),
     getStartCoords = Symbol("get start coordinates"),
     getTargetCoords = Symbol("get target coordinates"),
-    getSize = Symbol("get size");
+    getSize = Symbol("get size"),
+    handleClick = Symbol("handle click"),
+    handleScroll = Symbol("handle scroll"),
+    handleResize = Symbol("handle resize");
 
 class Thumbnail extends Image {
     constructor(parent, path, index) {
@@ -17,31 +20,8 @@ class Thumbnail extends Image {
             stop: () => {}
         };
         this.zoomed = false;
+        this.index = index;
         this.addUIEvent("click");
-        this.onReceive = event => {
-            if (event === "click") {
-                this.zoomed = true;
-                this.scaler.stop();
-                this.mover.stop();
-                this.scaler = Scaler.addTo(this, calculator.getZoomDimensions()).start();
-                this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
-            }
-            if (event === "VIEWPORT_RESIZE") {
-                this.scaler.stop();
-                this.mover.stop();
-                if (this.zoomed) {
-                    this.scaler = Scaler.addTo(this, calculator.getZoomDimensions()).start();
-                    this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
-                } else {
-                    this.scaler = Scaler.addTo(this, Thumbnail[getSize]()).start();
-                    this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
-                }
-            }
-            if (event === "VIEWPORT_SCROLL" && this.zoomed) {
-                this.mover.stop();
-                this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
-            }
-        };
     }
 
     static addTo(container, index) {
@@ -53,7 +33,49 @@ class Thumbnail extends Image {
             });
     }
 
+    onReceive(event) {
+        switch (event) {
+            case "click":
+                this[handleClick]();
+                break;
+            case "VIEWPORT_RESIZE":
+                this[handleResize]();
+                break;
+            case "VIEWPORT_SCROLL":
+                this[handleScroll]();
+                break;
+            default:
+        }
+    }
+
     ////////// PRIVATE METHODS //////////
+
+    [handleClick]() {
+        this.zoomed = true;
+        this.scaler.stop();
+        this.mover.stop();
+        this.scaler = Scaler.addTo(this, calculator.getZoomDimensions()).start();
+        this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
+    }
+
+    [handleResize]() {
+        this.scaler.stop();
+        this.mover.stop();
+        if (this.zoomed) {
+            this.scaler = Scaler.addTo(this, calculator.getZoomDimensions()).start();
+            this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
+        } else {
+            this.scaler = Scaler.addTo(this, Thumbnail[getSize]()).start();
+            this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](this.index)).start();
+        }
+    }
+
+    [handleScroll]() {
+        if (this.zoomed) {
+            this.mover.stop();
+            this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
+        }
+    }
 
     static [getSize]() {
         return calculator.getThumbnailSize();
