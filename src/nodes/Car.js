@@ -8,6 +8,11 @@
 import calculator from "../calculator";
 import Mover from "../components/Mover";
 import Node from "famous/core/Node";
+import Dispatch from "famous/core/Dispatch";
+import Scaler from "../components/Scaler";
+import ThumbsUp from "./ThumbsUp";
+import Thumbnail from "./Thumbnail";
+import createDOMElement from "../createDOMElement";
 
 const getStartCoords = Symbol("get start coordinates"),
     getTargetCoords = Symbol("get target coordinates"),
@@ -22,17 +27,26 @@ class Car extends Node {
         super();
         const size = Car[getSize](),
             startCoords = Car[getStartCoords](index);
-        parent.addChild(this);
-        this.mover = Mover.addTo(this, Car[getTargetCoords](index)).start();
-        this.scaler = {
-            stop: () => {}
-        };
-        this.zoomed = false;
         this.index = index;
-        this.addUIEvent("click");
+        this.zoomed = false;
+        parent.addChild(this);
         super.setSizeMode("absolute", "absolute", "absolute")
             .setAbsoluteSize(size.w, size.h)
             .setPosition(startCoords.x, startCoords.y, startCoords.z);
+        Thumbnail.addTo(this, this.index).then(() => this.start());
+    }
+
+    start() {
+        this.mover = Mover.addTo(this, Car[getTargetCoords](this.index)).start();
+        this.scaler = {
+            stop: () => {}
+        };
+        this.addUIEvent("click");
+         //DELETE THIS
+        createDOMElement(this, {}).
+            setAttribute("style", "background: tomato;");
+         //TO THIS
+
     }
 
     onReceive(event) {
@@ -67,6 +81,8 @@ class Car extends Node {
         this.zoomed = true;
         this.scaler.stop();
         this.mover.stop();
+        console.log("[PH_LOG] calculator.getZoomDimensions(): ", calculator.getZoomDimensions()); // PH_TODO: REMOVE
+        console.log("[PH_LOG] calculator.getZoomCoords(): ", calculator.getZoomCoords()); // PH_TODO: REMOVE
         this.scaler = Scaler.addTo(this, calculator.getZoomDimensions()).start();
         this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
         ThumbsUp.addTo(this).then(thumbsUp => this.thumbsUp = thumbsUp);
@@ -77,7 +93,7 @@ class Car extends Node {
         this.scaler.stop();
         this.mover.stop();
         this.scaler = Scaler.addTo(this, calculator.getThumbnailSize()).start();
-        this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](this.index)).start();
+        this.mover = Mover.addTo(this, Car[getTargetCoords](this.index)).start();
     }
 
     [handleResize]() {
@@ -87,8 +103,8 @@ class Car extends Node {
             this.scaler = Scaler.addTo(this, calculator.getZoomDimensions()).start();
             this.mover = Mover.addTo(this, calculator.getZoomCoords()).start();
         } else {
-            this.scaler = Scaler.addTo(this, Thumbnail[getSize]()).start();
-            this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](this.index)).start();
+            this.scaler = Scaler.addTo(this, Car[getSize]()).start();
+            this.mover = Mover.addTo(this, Car[getTargetCoords](this.index)).start();
         }
     }
 

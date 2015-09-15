@@ -1,26 +1,15 @@
-import calculator from "../calculator";
 import loadImage from "../loadImage";
-import Mover from "../components/Mover";
 import Image from "./Image";
-import Scaler from "../components/Scaler";
-import Dispatch from "famous/core/Dispatch";
-import ThumbsUp from "./ThumbsUp";
+import getSize from "../getSize";
+import getCoords from "../getCoords";
 
-const getPath = Symbol("get path"),
-    getStartCoords = Symbol("get start coordinates"),
-    getTargetCoords = Symbol("get target coordinates"),
-    getSize = Symbol("get size"),
-    zoomIn = Symbol("zoom in"),
-    zoomOut = Symbol("zoom out"),
-    handleScroll = Symbol("handle scroll"),
-    handleResize = Symbol("handle resize");
+const getPath = Symbol("get path");
 
 class Thumbnail extends Image {
     constructor(parent, path, index) {
-        super(parent, path, Thumbnail[getSize](), Thumbnail[getStartCoords](index));
-        this.mover = Mover.addTo(this, Thumbnail[getTargetCoords](index)).start();
+        //super(parent, path, getSize(parent), getCoords(parent));
+        super(parent, path, getSize(parent), { x: 0, y: 0, z: 0 });
         this.index = index;
-        this.addUIEvent("click");
     }
 
     static addTo(container, index) {
