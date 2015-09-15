@@ -1,4 +1,4 @@
-import Thumbnail from "./nodes/Thumbnail";
+import Car from "./nodes/Car";
 import Logo from "./nodes/Logo";
 import delay from "./delay";
 import scene from "./scene";
@@ -10,7 +10,7 @@ import Dispatch from "famous/core/Dispatch";
 Logo.addTo(scene);
 
 for (let i = 0; i < settings.numberOfThumbnails; i++) {
-    delay((i * 30) + (Math.random() * 100), Thumbnail.addTo)(scene, i);
+    delay((i * 30) + (Math.random() * 100), Car.addTo)(scene, i);
 }
 
 onResize(() => Dispatch.dispatch("body", "VIEWPORT_RESIZE", getViewportSize()));

@@ -31,7 +31,7 @@ class Mover {
         this.node.setPosition(this.transition.x.get(), this.transition.y.get(), this.transition.z.get());
 
         if (this.transition.x.isActive() || this.transition.y.isActive() || this.transition.z.isActive()) {
-            this.node.requestUpdate(this.id);
+            this.node.requestUpdateOnNextTick(this.id);
             return;
         }
 

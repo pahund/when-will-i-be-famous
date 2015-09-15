@@ -28,7 +28,7 @@ class Scaler {
         this.node.setAbsoluteSize(this.transition.w.get(), this.transition.h.get());
 
         if (this.transition.w.isActive() || this.transition.h.isActive()) {
-            this.node.requestUpdate(this.id);
+            this.node.requestUpdateOnNextTick(this.id);
             return;
         }
         this.stop();

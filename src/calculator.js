@@ -31,11 +31,14 @@ function getGridCoords(index) {
 }
 
 function getZoomDimensions() {
-    const viewportWidth = getViewportSize().w;
-    return {
-        w: viewportWidth,
-        h: viewportWidth * 0.75 // 4:3 hardcoded
-    };
+    const { viewportWidth, viewportHeight } = getViewportSize();
+    let w = viewportWidth,
+        h = viewportWidth * 0.75; // 4:3 hardcoded
+    if (h > viewportHeight) {
+        h = viewportHeight;
+        w = viewportHeight * 1.33333333333333333;
+    }
+    return { w, h };
 }
 
 function getZoomCoords() {
